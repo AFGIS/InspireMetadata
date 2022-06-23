@@ -70,14 +70,16 @@ class CreateMetadata(object):
             parser = ET.XMLParser()
             tree = ET.parse(f, parser=parser)
             root = tree.getroot()
-            arcpy.AddMessage(root.tag)
+            arcpy.AddMessage(root.tag[34:])
 
             prefix_map = {'gmd': 'http://www.isotc211.org/2005/gmd', 'gmx': 'http://www.isotc211.org/2005/gmx',
                           'gco': 'http://www.isotc211.org/2005/gco', 'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                           'gml': 'http://www.opengis.net/gml/3.2', 'xlink': 'http://www.w3.org/1999/xlink'}
 
-            purposeEls = root.findall(".//gmd:electronicMailAddress/gco:CharacterString", prefix_map)
+            purposeEls = root.findall(".//", prefix_map) #".//gco:CharacterString"
             for element in purposeEls:
+                if element.tag is not None:
+                    arcpy.AddMessage(element.tag[34:])
                 if element.text is not None:
                     arcpy.AddMessage(element.text)
         return
